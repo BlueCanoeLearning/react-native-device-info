@@ -110,14 +110,27 @@ RCT_EXPORT_MODULE();
 #endif
 }
 
+
 - (NSString*) userAgent
 {
-#if TARGET_OS_TV
+
+// temporarily disabled until WkWebView implementation is available
+// need to modify this method accept a promise like so:
+/*
+RCT_EXPORT_METHOD(getUserAgent:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
+{
+    WKWebView *webView = [[WKWebView alloc] initWithFrame:CGRectZero];
+    [webView loadHTMLString:@"<html></html>" baseURL:nil];
+    [webView evaluateJavaScript:@"navigator.userAgent" completionHandler:^(id __nullable userAgent, NSError * __nullable error) {
+        if (error) {
+            reject(error);
+        } else {
+            resovle([NSString stringWithFormat:@"%@", userAgent]);
+        }
+    }];
+}
+*/ 
     return @"not available";
-#else
-    UIWebView* webView = [[UIWebView alloc] initWithFrame:CGRectZero];
-    return [webView stringByEvaluatingJavaScriptFromString:@"navigator.userAgent"];
-#endif
 }
 
 - (NSString*) deviceLocale
